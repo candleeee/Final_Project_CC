@@ -36,16 +36,14 @@ class CheckoutController extends Controller
 
     public function store(Request $request)
 {
-    // Validasi input pengguna
     $validatedData = $request->validate([
         'profile_name' => 'required|string|max:255',
-        'product_id' => 'required|exists:barangs,id',
-        'quantity' => 'required|integer|min:1', // Validasi untuk kuantitas
+        'product_id' => 'required|exists:barangs,id', // Pastikan mengacu ke tabel `barangs`
+        'quantity' => 'required|integer|min:1',
         'address' => 'required|string',
-        'payment_method' => 'required|string', // Validasi untuk metode pembayaran
+        'payment_method' => 'required|string',
     ]);
 
-    // Temukan produk berdasarkan product_id yang divalidasi
     $product = Barang::findOrFail($validatedData['product_id']);
 
     // Hitung total harga berdasarkan jumlah produk
@@ -71,13 +69,9 @@ class CheckoutController extends Controller
 
     public function show($id)
     {
-     $pageTitle = 'Show';
-
-     // Ambil data barang berdasarkan ID
-     $barang = Barang::with('satuan')->findOrFail($id);
-
-     // Tampilkan halaman detail produk
-     return view('checkout.show', compact('pageTitle', 'barang'));
+        $pageTitle = 'Show';
+        $barang = Barang::findOrFail($id); // Gunakan findOrFail untuk menangani jika barang tidak ditemukan
+        return view('checkout.show', compact('pageTitle', 'barang'));
     }
 
     public function edit($id)
