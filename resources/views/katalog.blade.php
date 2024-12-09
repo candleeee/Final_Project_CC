@@ -18,7 +18,7 @@
     #gambarkatalog {
         width: 100%;
         height: 200px;
-        object-fit: cover; /* Gambar tetap proporsional */
+        object-fit: cover;
         border-radius: 5px;
     }
     .card-body {
@@ -51,9 +51,9 @@
                     <img src="{{ asset($barang->gambar) }}" class="card-img-top" id="gambarkatalog" alt="Gambar Barang">
                     <div class="card-body">
                         <h5 class="card-title">{{ $barang->Nama_Barang }}</h5>
-                        <p class="card-text">Rp {{ $barang->Harga_Barang }} /{{ $barang->satuan->Nama_Satuan }}</p>
+                        <p class="card-text">Rp {{ $barang->Harga_Barang }} /{{ $barang->satuan?->Nama_Satuan ?? 'Satuan Tidak Ditemukan' }}</p>
                         <p class="card-text" id="deskripsi">{{ $barang->Deskripsi_Barang }}</p>
-                        <a href="{{ route('checkout.show', ['checkout' => $barang->id]) }}" class="btn cardbutton">Lihat Detail</a>
+                        <a href="{{ route('checkout.show', ['id' => $barang->id]) }}" class="btn cardbutton">Lihat Detail</a>
                     </div>
                 </div>
             </div>

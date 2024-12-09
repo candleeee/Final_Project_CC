@@ -9,9 +9,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminProdukController;
 use App\Http\Controllers\AdminSatuanController;
 use App\Http\Controllers\AdminTransaksiController;
+use App\Http\Controllers\ReceiptController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ReceiptController;
+
 
 Route::get('/', function () {
     return view('shop');
@@ -47,6 +48,11 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware(['auth'])->group(function () {
     Route::get('/cetak-struk', [ReceiptController::class, 'index'])->name('receipt.index');
     Route::post('/order/create', [ReceiptController::class, 'createOrder'])->name('order.create');
+    Route::delete('/order/{id}/cancel', [ReceiptController::class, 'cancelOrder'])->name('order.cancel');
+
+    Route::get('/checkout/{id}', [CheckoutController::class, 'show'])->name('checkout.show');
+    Route::resource('adminproduk', AdminProdukController::class)->middleware(['auth', 'admin.access']);
+    Route::get('/cetak-struk', [ReceiptController::class, 'index'])->name('receipt.index');
     Route::delete('/order/{id}/cancel', [ReceiptController::class, 'cancelOrder'])->name('order.cancel');
 });
 

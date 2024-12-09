@@ -1,82 +1,89 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container mt-5">
+    <h2 class="mb-4 text-center">STRUK PEMBELIAN</h2>
+    <p class="text-center">Order Summary</p>
+    <p class="text-center">{{ now()->format('l, F j, Y') }}</p>
+
+    <div class="receipt">
+        @foreach($pembelians as $pembelian)
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 class="card-title">Pesanan #{{ $loop->iteration }}</h3>
+                    <p class="card-text">QTY: {{ $pembelian->jumlah_produk }}</p>
+                    <p class="card-text">ITEM: {{ $pembelian->nama_barang }}</p>
+                    <p class="card-text">HARGA: Rp {{ number_format($pembelian->harga_barang, 2, ',', '.') }}</p>
+                </div>
+            </div>
+        @endforeach
+
+        <div class="total">
+            <p>Total Item: {{ $totalItems }}</p>
+            <p>Total Jumlah: Rp {{ number_format($totalAmount, 2, ',', '.') }}</p>
+        </div>
+
+        <p class="thank-you text-center">Terima kasih!</p>
+    </div>
+
     <style>
-        /* Gaya sederhana untuk tampilan struk */
-        .struk {
-            width: 250px;
-            margin: 0 auto;
-            padding: 10px;
-            border: 1px solid #000;
-            font-family: Arial, sans-serif;
-            box-shadow: none;
-            font-size: 12px;
+        .btn-group {
+            display: flex;
+            justify-content: space-between; /* Mengatur tombol dengan jarak antar tombol */
+            margin-top: 20px; /* Jarak atas tombol */
         }
-        .struk h2, .struk p {
-            text-align: center;
-            margin: 0;
+
+        .btn {
+            min-width: 150px; /* Mengatur lebar tombol agar seragam */
+            margin: 0 10px; /* Menambahkan margin horizontal untuk jarak antar tombol */
         }
-        .table {
-            width: 100%;
-            margin-top: 10px;
-            border-collapse: collapse;
+
+        .btn-primary {
+            background-color: #e0a800ff; /* Warna biru Bootstrap */
+            border-color: #007bff;
+            color: #fff; /* Teks putih */
         }
-        .table th, .table td {
-            text-align: left;
-            padding: 5px;
-            font-size: 12px;
+
+        .btn-danger {
+            background-color: #dc3545; /* Warna merah Bootstrap */
+            border-color: #dc3545;
+            color: #fff; /* Teks putih */
         }
-        .total, .terima-kasih {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
+
+        .btn-black {
+            background-color: #000; /* Warna hitam */
+            border-color: #000;
+            color: #fff; /* Teks putih */
+        }
+
+        .btn-primary:hover {
+            background-color: #000000; /* Warna biru gelap saat hover */
+            border-color: #000000;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333; /* Warna merah gelap saat hover */
+            border-color: #c82333;
+        }
+
+        .btn-black:hover {
+            background-color: #333; /* Warna hitam gelap saat hover */
+            border-color: #333;
         }
     </style>
 
-    <div class="struk">
-        <h2>STRUK PEMBELIAN</h2>
-        <p>Pesanan #{{ $order->id }}</p>
-        <p>{{ now()->format('d/m/Y H:i') }}</p>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>QTY</th>
-                    <th>Barang</th>
-                    <th>Harga</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($pembelians as $pembelian)
-                <tr>
-                    <td>{{ $pembelian->jumlah_produk }}</td>
-                    <td>{{ $pembelian->nama_barang }}</td>
-                    <td>Rp {{ number_format($pembelian->total_harga, 0, ',', '.') }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
-
-        <div class="total">
-            <p>Total Barang: {{ $totalItems }}</p>
-            <p>Total Harga: Rp {{ number_format($totalAmount, 0, ',', '.') }}</p>
-        </div>
-
-        <p class="terima-kasih">Terima kasih atas pembelian Anda!</p>
-    </div>
-
-    <div class="btn-group" style="display: flex; justify-content: space-between; margin-top: 15px;">
-        <a href="{{ route('katalog') }}" class="btn btn-primary">Tambah Order</a>
-        @if($pembelians->isNotEmpty())
-            <form action="{{ route('order.batal', ['id' => $pembelians->first()->id]) }}" method="POST" class="d-inline">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Batalkan Order</button>
-            </form>
-        @else
-            <p>Tidak ada pembelian untuk dibatalkan.</p>
-        @endif
-    </div>
+   <div class="btn-group">
+    <a href="{{ route('katalog') }}" class="btn btn-primary">Tambah Order</a>
+    @if($pembelians->isNotEmpty())
+        <form action="{{ route('order.cancel', ['id' => 'all']) }}" method="POST" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-danger">Batalkan Semua Order</button>
+        </form>
+    @else
+        <p>Anda belum memiliki pesanan</p>
+    @endif
+    <a href="{{ url()->previous() }}" class="btn btn-black">Kembali</a>
+</div>
 </div>
 @endsection

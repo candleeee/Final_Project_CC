@@ -9,7 +9,7 @@ class Barang extends Model
 {
     use HasFactory;
     public function satuan()
-    {
-        return $this->belongsTo(Satuan::class);  // Relasi satu barang dengan satuan
-    }
+{
+    return $this->belongsTo(Satuan::class, 'satuan_id');
+}
 }

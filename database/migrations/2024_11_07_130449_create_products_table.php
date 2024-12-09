@@ -11,12 +11,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->string('name'); // Nama produk
-            $table->decimal('price', 10, 2); // Harga produk
-            $table->text('description')->nullable(); // Deskripsi produk (opsional)
-            $table->timestamps(); // Waktu dibuat dan diperbarui
+        Schema::create('pembelians', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('product_id');
+            $table->string('nama_profile');
+            $table->string('nama_barang');
+            $table->integer('jumlah_produk');
+            $table->decimal('harga_barang', 10, 2);
+            $table->decimal('total_harga', 10, 2);
+            $table->text('alamat');
+            $table->string('metode_pembayaran');
+            $table->timestamps();
+
+            // Foreign key untuk user_id
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+
+            // Foreign key untuk product_id
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 
@@ -25,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('pembelians');
     }
 };

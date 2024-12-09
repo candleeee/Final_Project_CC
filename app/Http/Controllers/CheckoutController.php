@@ -35,37 +35,41 @@ class CheckoutController extends Controller
     }
 
     public function store(Request $request)
-{
-    $validatedData = $request->validate([
-        'profile_name' => 'required|string|max:255',
-        'product_id' => 'required|exists:barangs,id', // Pastikan mengacu ke tabel `barangs`
-        'quantity' => 'required|integer|min:1',
-        'address' => 'required|string',
-        'payment_method' => 'required|string',
-    ]);
+    {
+        $validatedData = $request->validate([
+            'profile_name' => 'required|string|max:255',
+            'product_id' => 'required|exists:barangs,id', // Pastikan mengacu ke tabel `barangs`
+            'quantity' => 'required|integer|min:1',
+            'address' => 'required|string',
+            'payment_method' => 'required|string',
+        ]);
 
-    $product = Barang::findOrFail($validatedData['product_id']);
+        $product = Barang::findOrFail($validatedData['product_id']);
 
-    // Hitung total harga berdasarkan jumlah produk
-    $totalPrice = $product->Harga_Barang * $validatedData['quantity'];
+        // Hitung total harga berdasarkan jumlah produk
+        $totalPrice = $product->Harga_Barang * $validatedData['quantity'];
 
-    // Simpan data ke tabel `pembelians`, termasuk `product_id`
-    Pembelian::create([
-        'user_id' => Auth::id(),
-        'product_id' => $validatedData['product_id'], // Pastikan `product_id` disimpan
-        'nama_profile' => $validatedData['profile_name'],
-        'nama_barang' => $product->Nama_Barang,
-        'jumlah_produk' => $validatedData['quantity'], // Simpan jumlah produk yang dibeli
-        'harga_barang' => $product->Harga_Barang,
-        'total_harga' => $totalPrice, // Simpan total harga
-        'alamat' => $validatedData['address'],
-        'metode_pembayaran' => $validatedData['payment_method'], // Simpan metode pembayaran
-    ]);
+        // Cek apakah total harga melebihi batas yang diperbolehkan
+        if ($totalPrice > 9999999999) { // Misalnya batas harga maksimum adalah 10 milyar
+            return back()->withErrors(['total_harga' => 'Total harga terlalu tinggi.'])->withInput();
+        }
 
-    // Redirect dengan pesan sukses
-    return redirect()->route('katalog')->with('success', 'Pembelian berhasil!');
-}
+        // Simpan data ke tabel pembelians
+        Pembelian::create([
+            'user_id' => Auth::id(),
+            'product_id' => $validatedData['product_id'], // Pastikan `product_id` disimpan
+            'nama_profile' => $validatedData['profile_name'],
+            'nama_barang' => $product->Nama_Barang,
+            'jumlah_produk' => $validatedData['quantity'], // Simpan jumlah produk yang dibeli
+            'harga_barang' => $product->Harga_Barang,
+            'total_harga' => $totalPrice, // Simpan total harga
+            'alamat' => $validatedData['address'],
+            'metode_pembayaran' => $validatedData['payment_method'], // Simpan metode pembayaran
+        ]);
 
+        // Redirect dengan pesan sukses
+        return redirect()->route('katalog')->with('success', 'Pembelian berhasil!');
+    }
 
     public function show($id)
     {

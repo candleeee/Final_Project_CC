@@ -67,7 +67,7 @@
                                             <td>{{ $barang->Nama_Barang }}</td>
                                             <td>Rp {{ $barang->Harga_Barang }}</td>
                                             <td>{{ $barang->Deskripsi_Barang }}</td>
-                                            <td>{{ $barang->satuan->Nama_Satuan }}</td>
+                                            <td>{{ $barang->satuan ? $barang->satuan->Nama_Satuan : 'Tidak ada satuan' }}</td>
                                             <td>
                                                 <a href="{{ route('adminproduk.show', ['adminproduk' => $barang->id]) }}"
                                                     class="btn btn-outline-dark btn-sm me-2"><i

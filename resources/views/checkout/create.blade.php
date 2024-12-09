@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Form Pembelian</h2>
@@ -37,6 +38,9 @@
             </div>
         </div>
 
+        <!-- Total Price (Hidden Field) -->
+        <input type="hidden" id="total_price" name="total_price" value="{{ $product->Harga_Barang }}">
+
         <!-- Address Section -->
         <div class="form-group row">
             <label for="address" class="col-sm-3 col-form-label">Alamat</label>
@@ -56,7 +60,6 @@
                 </select>
             </div>
         </div>
-
         <div class="form-group row mt-4">
             <div class="col-sm-12 text-center">
                 <button type="submit" class="btn btn-primary btn-lg">Beli Sekarang</button>
@@ -64,4 +67,15 @@
         </div>
     </form>
 </div>
+
+<script>
+    // Update total price when quantity changes
+    document.getElementById('quantity').addEventListener('input', function() {
+        var quantity = this.value;
+        var price = {{ $product->Harga_Barang }};
+        var totalPrice = quantity * price;
+        document.getElementById('total_price').value = totalPrice;
+    });
+</script>
+
 @endsection
