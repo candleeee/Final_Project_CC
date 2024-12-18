@@ -1,24 +1,20 @@
 pipeline {
-    agent {
-        node {
-            label "Linux && java11"
-        }
-    }
+    agent any
     stages {
-        stage("Build") {
+        stage('Clone Repository') {
             steps {
-                echo("Hello Build")
+                git 'https://github.com/candleeee/Final_Project_CC.git'
             }
         }
-        stage("Test") {
+        stage('Install Dependencies') {
             steps {
-                echo("Hello Test")
+                bat 'ansible-galaxy install -r requirements.yml'
             }
         }
-        stage("Deploy") {
+        stage('Run Ansible Playbook') {
             steps {
-                echo("Hello Deploy")
+                bat 'ansible-playbook playbooks/mariadb.yml -i hosts'
             }
-        }
-    }
+        }
+    }
 }
