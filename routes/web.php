@@ -34,6 +34,7 @@ Route::get('/checkout/create/{product_id}', [CheckoutController::class, 'create'
 Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store')->middleware('auth');
 
 
+
 Auth::routes();
 
 Route::middleware(['auth'])->group(function () {
@@ -54,5 +55,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('adminproduk', AdminProdukController::class)->middleware(['auth', 'admin.access']);
     Route::get('/cetak-struk', [ReceiptController::class, 'index'])->name('receipt.index');
     Route::delete('/order/{id}/cancel', [ReceiptController::class, 'cancelOrder'])->name('order.cancel');
+
 });
 

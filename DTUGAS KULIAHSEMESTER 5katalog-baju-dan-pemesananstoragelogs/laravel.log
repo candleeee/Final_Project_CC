@@ -1,0 +1,32 @@
+[2024-12-18 06:11:41] local.ERROR: Command "key:generatephp" is not defined.
+
+Did you mean one of these?
+    event:generate
+    key:generate {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"key:generatephp\" is not defined.
+
+Did you mean one of these?
+    event:generate
+    key:generate at /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('key:generatephp')
+#1 /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /var/www/katalog-baju-dan-pemesanan/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /var/www/katalog-baju-dan-pemesanan/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 
+[2024-12-18 06:11:57] local.ERROR: Command "key:generatephp" is not defined.
+
+Did you mean one of these?
+    event:generate
+    key:generate {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"key:generatephp\" is not defined.
+
+Did you mean one of these?
+    event:generate
+    key:generate at /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php:737)
+[stacktrace]
+#0 /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php(266): Symfony\\Component\\Console\\Application->find('key:generatephp')
+#1 /var/www/katalog-baju-dan-pemesanan/vendor/symfony/console/Application.php(175): Symfony\\Component\\Console\\Application->doRun(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#2 /var/www/katalog-baju-dan-pemesanan/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(201): Symfony\\Component\\Console\\Application->run(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#3 /var/www/katalog-baju-dan-pemesanan/artisan(35): Illuminate\\Foundation\\Console\\Kernel->handle(Object(Symfony\\Component\\Console\\Input\\ArgvInput), Object(Symfony\\Component\\Console\\Output\\ConsoleOutput))
+#4 {main}
+"} 

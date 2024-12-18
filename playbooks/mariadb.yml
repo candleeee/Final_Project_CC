@@ -1,0 +1,73 @@
+- name: Install and configure MariaDB
+  hosts: webservers
+  become: true
+  vars:
+    db_root_password: "your_root_password"
+    db_name: "mydatabase"
+    db_user: "myuser"
+    db_user_password: "mypassword"
+
+  tasks:
+    - name: Install MariaDB package
+      apt:
+        name: mariadb-server
+        state: present
+        update_cache: yes
+
+    - name: Start and enable MariaDB service
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Set root password for MariaDB
+      mysql_user:
+        name: root
+        host: localhost
+        password: "{{ db_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        state: present
+
+    - name: Remove anonymous users
+      mysql_user:
+        name: ''
+        host: localhost
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        state: absent
+
+    - name: Disallow root login remotely
+      mysql_user:
+        name: root
+        host: "{{ item }}"
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        state: absent
+      with_items:
+        - "{{ ansible_hostname }}"
+        - '127.0.0.1'
+        - '::1'
+
+    - name: Remove test database
+      mysql_db:
+        name: test
+        state: absent
+        login_user: root
+        login_password: "{{ db_root_password }}"
+
+    - name: Create a database
+      mysql_db:
+        name: "{{ db_name }}"
+        state: present
+        login_user: root
+        login_password: "{{ db_root_password }}"
+
+    - name: Create a database user with privileges
+      mysql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_user_password }}"
+        priv: "{{ db_name }}.*:ALL"
+        host: "%"
+        login_user: root
+        login_password: "{{ db_root_password }}"
+        state: present

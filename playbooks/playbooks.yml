@@ -1,0 +1,9 @@
+- name: Install PyMySQL
+  hosts: webservers
+  become: true
+
+  tasks:
+    - name: Install PyMySQL package
+      ansible.builtin.apt:
+        name: python3-pymysql
+        state: present
