@@ -15,6 +15,6 @@ pipeline {
             steps {
                 bat 'ansible-playbook playbooks/mariadb.yml -i hosts'
             }
-        }
-    }
+        }
+    }
 }
