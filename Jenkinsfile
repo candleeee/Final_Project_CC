@@ -7,14 +7,14 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            steps {
-                bat 'ansible-galaxy install -r requirements.yml'
-            }
-        }
-        stage('Run Ansible Playbook') {
-            steps {
-                bat 'ansible-playbook playbooks/mariadb.yml -i hosts'
-            }
-        }
+    steps {
+        sh 'ansible-galaxy install -r requirements.yml'
     }
+}
+stage('Run Ansible Playbook') {
+    steps {
+        sh 'ansible-playbook playbooks/mariadb.yml -i hosts'
+    }
+}
+
 }
