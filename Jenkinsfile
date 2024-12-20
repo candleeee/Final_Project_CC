@@ -3,38 +3,18 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                script {
-                    echo 'Cloning repository...'
-                    // Simulasi cloning repository
-                    echo 'Repository cloned successfully.'
-                }
+                git 'https://github.com/candleeee/Final_Project_CC.git'
             }
         }
-        stage('Run Tests') {
+        stage('Install Dependencies') {
             steps {
-                script {
-                    echo 'Running tests...'
-                    // Simulasi menjalankan testing
-                    echo 'All tests passed successfully.'
-                }
+                bat 'ansible-galaxy install -r requirements.yml'
             }
         }
-        stage('Deploy') {
+        stage('Run Ansible Playbook') {
             steps {
-                script {
-                    echo 'Deploying application...'
-                    // Simulasi proses deploy
-                    echo 'Application deployed successfully.'
-                }
+                bat 'ansible-playbook playbooks/mariadb.yml -i hosts'
             }
         }
     }
-    post {
-        success {
-            echo 'Pipeline completed successfully!'
-        }
-        failure {
-            echo 'Pipeline failed. Please check the logs for more details.'
-        }
-    }
 }
